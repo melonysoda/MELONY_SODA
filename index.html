@@ -1129,5 +1129,20 @@
     renderTagPool();
     renderFilterButtons();
 </script>
-</body>
+<!-- Firebase SDK 및 연동 설정 -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAeswy1k5RMZlmpjBlDiodUPi2IAR3PA-s",
+    authDomain: "melonsoda-8dc2e.firebaseapp.com",
+    projectId: "melonsoda-8dc2e",
+    storageBucket: "melonsoda-8dc2e.firebasestorage.app",
+    messagingSenderId: "612037378285",
+    appId: "1:612037378285:web:2a7fb8a959be812077cce4",
+    measurementId: "G-JFF0309704"
+  };
+
+  const app = initializeApp(firebaseConfig);
+</script></body>
 </html>
