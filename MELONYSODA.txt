@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💩 디미고 지하실 일본 여행 프로젝트</title>
+    <style>
+        :root {
+            /* ☀️ 라이트 모드 변수 */
+            --primary: #ff4e50;
+            --primary-hover: #e04345;
+            --header-bg: linear-gradient(135deg, #ff4e50 0%, #ff7675 100%);
+            --header-shadow: 0 10px 25px rgba(255, 78, 80, 0.2);
+            --bg-gradient: linear-gradient(120deg, #f6f8f9 0%, #e5ebee 100%);
+            --container-bg: rgba(255, 255, 255, 0.98);
+            --text-main: #2d3436;
+            --text-muted: #636e72;
+            --text-sub: #b2bec3;
+            --input-bg: #ffffff;
+            --input-border: #dfe6e9;
+            --input-focus: #ff4e50;
+            --form-bg: #fafbfc;
+            --form-border: #f1f2f6;
+            --card-bg: #ffffff;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            --tag-unselected-bg: #f1f2f6;
+            --tag-unselected-text: #747d8c;
+            --tag-border: #dfe6e9;
+            --tag-dashed-border: #ff7675;
+            --memo-bg: #f8f9fa;
+            --filter-bg: #ffffff;
+            --border-light: #f1f2f6;
+            --comment-bg: #f8f9fa;
+            --empty-msg: #a4b0be;
+            --link-color: #0984e3;
+            --btn-add-bg: #74b9ff;
+            --btn-add-hover: #0984e3;
+            --tab-bg: #f1f2f6;
+            --tab-text: #a4b0be;
+            --modal-overlay: rgba(0,0,0,0.4);
+            --upvote-color: #2ed573;
+            --downvote-color: #ff4757;
+        }
+
+        /* 🌙 다크 모드 변수 */
+        body.dark-mode {
+            --primary: #ff7979;
+            --primary-hover: #ff5252;
+            --header-bg: linear-gradient(135deg, #2d3436 0%, #1e272e 100%);
+            --header-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            --bg-gradient: linear-gradient(120deg, #11141a 0%, #1a1c23 100%);
+            --container-bg: #1e222b;
+            --text-main: #f5f6fa;
+            --text-muted: #b2bec3;
+            --text-sub: #636e72;
+            --input-bg: #252a34;
+            --input-border: #353b48;
+            --input-focus: #ff7979;
+            --form-bg: #252a34;
+            --form-border: #2d3436;
+            --card-bg: #252a34;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            --tag-unselected-bg: #2d3436;
+            --tag-unselected-text: #b2bec3;
+            --tag-border: #353b48;
+            --tag-dashed-border: #4b6584;
+            --memo-bg: #1e222b;
+            --filter-bg: #252a34;
+            --border-light: #2d3436;
+            --comment-bg: #1e222b;
+            --empty-msg: #636e72;
+            --link-color: #74b9ff;
+            --btn-add-bg: #4b6584;
+            --btn-add-hover: #4a69bd;
+            --tab-bg: #252a34;
+            --tab-text: #636e72;
+            --modal-overlay: rgba(0,0,0,0.6);
+            --upvote-color: #2ed573;
+            --downvote-color: #ff4757;
+        }
+
+        * { box-sizing: border-box; transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container {
+            width: 100%;
+            max-width: 640px;
+            background: var(--container-bg);
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+            position: relative;
+        }
+
+        /* 다크모드 버튼 */
+        .theme-toggle-btn {
+            position: absolute;
+            top: 42px;
+            right: 30px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(5px);
+            border: none;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        body.dark-mode .theme-toggle-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
+        }
+        .theme-toggle-btn:hover { transform: translateY(-1px); }
+
+        .header-zone {
+            text-align: left;
+            padding: 30px;
+            background: var(--header-bg);
+            border-radius: 20px;
+            color: white;
+            margin-bottom: 30px;
+            box-shadow: var(--header-shadow);
+        }
+        h1 { margin: 0 0 6px 0; font-size: 24px; font-weight: 800; letter-spacing: -0.5px; color: white; }
+        .subtitle { font-size: 13px; opacity: 0.85; font-weight: 500; color: white; }
+
+        /* 🗂️ 탭 메뉴 */
+        .tab-container {
+            display: flex;
+            background: var(--tab-bg);
+            padding: 6px;
+            border-radius: 14px;
+            gap: 4px;
+            margin-bottom: 30px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            background: transparent;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            color: var(--text-muted);
+        }
+        .tab-btn.active {
+            background: var(--container-bg);
+            color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        /* 공통 폼 스타일 */
+        form {
+            display: flex; flex-direction: column; gap: 20px; background: var(--form-bg);
+            padding: 24px; border-radius: 18px; margin-bottom: 35px; border: 1px solid var(--form-border);
+        }
+        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        .input-group label { font-size: 12px; font-weight: 700; color: var(--text-muted); padding-left: 2px; text-transform: uppercase; }
+        input, textarea, select {
+            padding: 12px 16px; border: 1px solid var(--input-border); border-radius: 10px;
+            font-size: 14px; outline: none; background-color: var(--input-bg); color: var(--text-main); font-family: inherit;
+        }
+        input:focus, textarea:focus, select:focus { border-color: var(--input-focus); box-shadow: 0 0 0 3px rgba(255, 78, 80, 0.12); }
+        body.dark-mode input:focus, body.dark-mode textarea:focus, body.dark-mode select:focus { box-shadow: 0 0 0 3px rgba(255, 121, 121, 0.15); }
+        
+        select {
+            cursor: pointer; -webkit-appearance: none; appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 10 10'><path d='M0 3l5 5 5-5z' fill='%23888888'/></svg>");
+            background-repeat: no-repeat; background-position: right 14px center; background-size: 10px; padding-right: 36px;
+        }
+        body.dark-mode select { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 10 10'><path d='M0 3l5 5 5-5z' fill='%23dcdde1'/></svg>"); }
+
+        .submit-btn { background: var(--primary); color: white; border: none; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; }
+        .submit-btn:hover { background: var(--primary-hover); }
+
+        /* 위시리스트 고유 스타일 */
+        .tag-manager-box { background: var(--card-bg); border: 1px dashed var(--tag-dashed-border); padding: 14px; border-radius: 12px; }
+        .add-tag-form { display: flex; gap: 8px; margin-bottom: 12px; }
+        .add-tag-form input { flex: 1; padding: 8px 12px; font-size: 13px; border-radius: 8px; }
+        .add-tag-form button { background: var(--btn-add-bg); color: white; border: none; padding: 0 14px; font-size: 13px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+        .tag-pool { display: flex; flex-wrap: wrap; gap: 6px; }
+        .selectable-tag { display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 30px; font-size: 12px; font-weight: 600; cursor: pointer; background: var(--tag-unselected-bg); border: 1px solid var(--tag-border); color: var(--tag-unselected-text); user-select: none; }
+        .selectable-tag.active { border-color: transparent !important; color: white !important; }
+        .tag-del-x { background: rgba(0, 0, 0, 0.08); border-radius: 50%; padding: 0 4px; font-size: 10px; margin-left: 2px; }
+
+        .filter-wrapper { margin-bottom: 30px; background: var(--filter-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--form-border); display: flex; flex-direction: column; gap: 14px; box-shadow: var(--card-shadow); }
+        .filter-block { display: flex; flex-direction: column; }
+        .filter-title { font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; }
+        .filter-container { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+        .filter-btn { background-color: var(--tag-unselected-bg); color: var(--text-muted); border: 1px solid transparent; padding: 6px 14px; font-size: 12px; font-weight: 600; border-radius: 30px; white-space: nowrap; cursor: pointer; }
+        .filter-btn.active { background: var(--primary); color: #fff; }
+
+        /* 카드 목록 */
+        .list-title { font-size: 16px; font-weight: 700; margin-bottom: 20px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+        ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 16px; }
+        li { display: flex; flex-direction: column; background: var(--card-bg); padding: 22px; border-radius: 16px; box-shadow: var(--card-shadow); border-left: 4px solid var(--primary); }
+        
+        .card-top { display: flex; flex-direction: column; gap: 14px; }
+        .link-info { display: flex; flex-direction: column; gap: 8px; }
+        .link-anchor { text-decoration: none; color: var(--link-color); font-weight: 700; font-size: 16px; word-break: break-all; display: inline-flex; align-items: center; gap: 4px; }
+        .link-anchor:hover { text-decoration: underline; }
+        .uploader-tag { background: #ffeaa7; color: #2d3436; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px; width: fit-content; }
+        body.dark-mode .uploader-tag { background: #fdcb6e; color: #2d3436; }
+        .link-memo { font-size: 13px; color: var(--text-muted); background: var(--memo-bg); padding: 10px 14px; border-radius: 8px; white-space: pre-line; line-height: 1.4; }
+        
+        .card-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: flex-start; margin-top: 4px; }
+        .vote-btn, .edit-btn, .save-btn, .delete-btn, .add-sched-btn { border: none; padding: 6px 12px; font-size: 11px; font-weight: 700; border-radius: 8px; cursor: pointer; color: white; display: inline-flex; align-items: center; gap: 4px; }
+        .vote-btn { background: transparent; font-size: 11px; }
+        .vote-btn.upvote { color: var(--upvote-color); border: 1px solid var(--upvote-color); }
+        .vote-btn.upvote.active { background: var(--upvote-color); color: #fff; }
+        .vote-btn.downvote { color: var(--downvote-color); border: 1px solid var(--downvote-color); }
+        .vote-btn.downvote.active { background: var(--downvote-color); color: #fff; }
+        
+        .edit-btn { background-color: #b2bec3; color: #2d3436; }
+        body.dark-mode .edit-btn { background-color: #636e72; color: #fff; }
+        .save-btn { background-color: #2ed573; }
+        .delete-btn { background-color: #ff7675; }
+        .add-sched-btn { background-color: #ff9f43; color: white; }
+
+        .edit-mode-box { display: flex; flex-direction: column; gap: 10px; background: var(--memo-bg); padding: 14px; border-radius: 12px; }
+        .edit-mode-box input, .edit-mode-box textarea, .edit-mode-box select { padding: 10px; font-size: 13px; border: 1px solid var(--input-border); border-radius: 8px; width: 100%; }
+
+        /* 댓글 */
+        .comment-zone { margin-top: 16px; border-top: 1px solid var(--border-light); padding-top: 14px; }
+        .comment-item { background: var(--comment-bg); padding: 8px 12px; border-radius: 8px; font-size: 13px; margin-bottom: 6px; line-height: 1.4; }
+        .comment-user { font-weight: 700; color: var(--text-main); margin-right: 6px; }
+        .comment-form { display: flex; gap: 6px; margin-top: 10px; align-items: center; }
+        
+        .comment-form select { 
+            padding: 8px 32px 8px 10px; 
+            font-size: 13px; 
+            border-radius: 8px; 
+            border: 1px solid var(--input-border); 
+            min-width: 95px; 
+            flex-shrink: 0; 
+            background-position: right 10px center;
+        }
+        .comment-form input { flex: 1; padding: 8px 12px; font-size: 13px; border-radius: 8px; border: 1px solid var(--input-border); }
+        .comment-form button { background: var(--text-main); color: var(--container-bg); border: none; padding: 9px 14px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; }
+
+        /* 🗓️ 일정 타임라인 고유 스타일 */
+        .timeline-day-header {
+            font-size: 16px; font-weight: 800; margin: 30px 0 15px 0; padding-bottom: 6px; border-bottom: 2px solid var(--primary); color: var(--text-main);
+        }
+        .timeline-day-header:first-child { margin-top: 0; }
+        
+        .timeline-item {
+            display: flex; gap: 14px; margin-bottom: 16px; align-items: stretch;
+        }
+        .timeline-time {
+            font-weight: 700; color: var(--text-muted); width: 45px; flex-shrink: 0; text-align: right; font-size: 13px; margin-top: 14px;
+        }
+        .timeline-card {
+            background: var(--card-bg); padding: 16px; border-radius: 12px; box-shadow: var(--card-shadow); flex-grow: 1; border-left: 3px solid var(--primary); position: relative;
+        }
+        .sched-title { font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
+        .sched-title a { color: var(--link-color); text-decoration: none; display: inline-flex; align-items: center; gap: 2px; }
+        .sched-title a:hover { text-decoration: underline; }
+        .sched-memo { font-size: 12px; color: var(--text-muted); line-height: 1.4; white-space: pre-line; }
+        .sched-actions { margin-top: 10px; display: flex; gap: 4px; justify-content: flex-end; }
+
+        .time-select-container { display: flex; gap: 4px; align-items: center; width: 100%; }
+        .time-select-container select { flex: 1; padding: 10px; font-size: 13px; }
+
+        /* 🗓️ 모달 팝업 */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--modal-overlay); z-index: 1000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            background: var(--container-bg); padding: 24px; border-radius: 18px; width: 90%; max-width: 380px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; color: var(--text-main); text-align: center; }
+        .modal-btn-group { display: flex; gap: 8px; margin-top: 20px; }
+        .modal-btn-group button { flex: 1; padding: 12px; font-size: 14px; font-weight: 700; border-radius: 10px; border: none; cursor: pointer; }
+        .btn-cancel { background: var(--tag-unselected-bg); color: var(--text-main); }
+        .btn-confirm { background: var(--primary); color: white; }
+
+        .empty-msg { text-align: center; color: var(--empty-msg); padding: 40px 0; font-size: 14px; font-weight: 500; }
+
+        .day-management-box {
+            display: flex; gap: 10px; margin-bottom: 20px; background: var(--form-bg); padding: 14px; border-radius: 14px; border: 1px solid var(--form-border); align-items: center; justify-content: space-between;
+        }
+        .day-manage-btn-group { display: flex; gap: 6px; }
+        .day-btn { padding: 6px 12px; font-size: 12px; font-weight: 700; border-radius: 8px; border: none; cursor: pointer; color: white; }
+        .day-btn.add { background-color: #2ed573; }
+        .day-btn.del { background-color: #ff4757; }
+
+        @media print {
+            body { background: #ffffff !important; padding: 0; margin: 0; color: #000000 !important; }
+            .container { box-shadow: none !important; max-width: 100% !important; padding: 10px !important; margin: 0 !important; background: #ffffff !important; }
+            .theme-toggle-btn, .header-zone, .tab-container, #wish-section, 
+            .day-management-box, #day-members-form, #custom-sched-form, 
+            .sched-actions, .modal-overlay, #print-btn {
+                display: none !important;
+            }
+            #sched-section { display: block !important; }
+            .timeline-card { border: 1px solid #dfe6e9 !important; box-shadow: none !important; background: #ffffff !important; color: #000000 !important; break-inside: avoid; }
+            .timeline-day-header { color: #000000 !important; border-bottom: 2px solid #000000 !important; page-break-after: avoid; margin-top: 25px !important; }
+            .sched-title, .sched-memo { color: #000000 !important; }
+            .timeline-time { color: #2d3436 !important; font-weight: bold; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <button id="theme-toggle" class="theme-toggle-btn">🌙 다크 모드</button>
+    <div class="header-zone">
+        <h1>✈️ 디미고 지하실 일본 여행</h1>
+        <div class="subtitle">가고 싶은 곳 모으고, 일정까지 완벽하게 💩</div>
+    </div>
+
+    <div class="tab-container">
+        <button id="tab-wish" class="tab-btn active" onclick="switchTab('wish')">📍 위시리스트</button>
+        <button id="tab-sched" class="tab-btn" onclick="switchTab('sched')">🗓️ 일정표 (TimeLine)</button>
+    </div>
+
+    <div id="wish-section">
+        <form id="travel-form">
+            <div class="input-group">
+                <label>👤 누구의 추천 장소인가요?</label>
+                <select id="uploader">
+                    <option value="" selected>이름을 선택해 주세요 ▽</option>
+                    <option value="김지오">😺 김지오</option>
+                    <option value="오건우">🍈 오건우</option>
+                    <option value="유연호">🤖 유연호</option>
+                    <option value="이지호">🦍 이지호</option>
+                    <option value="이지훈">🦴 이지훈</option>
+                    <option value="한희진">🐻 한희진</option>
+                    <option value="한상우">💕 한상우</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>📍 제목</label>
+                <input type="text" id="title" placeholder="예: 도쿄 해리포터 스튜디오" required>
+            </div>
+            <div class="input-group">
+                <label>🔗 블로그 / 웹사이트 주소</label>
+                <input type="text" id="url" placeholder="링크 주소(URL)" required>
+            </div>
+            <div class="input-group">
+                <label>🏷️ 태그 고르기</label>
+                <div class="tag-manager-box">
+                    <div class="add-tag-form">
+                        <input type="text" id="new-tag-input" placeholder="새 태그 (예: 쇼핑)">
+                        <button type="button" onclick="addNewTag()">+ 추가</button>
+                    </div>
+                    <div class="tag-pool" id="tag-pool"></div>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>📝 간단한 메모</label>
+                <textarea id="memo" placeholder="예: 인당 2천엔" rows="2"></textarea>
+            </div>
+            <button type="submit" class="submit-btn">🔥 위시리스트에 던지기!</button>
+        </form>
+
+        <div class="filter-wrapper">
+            <div class="filter-block">
+                <div class="filter-title">🏷️ 카테고리 필터 (중복 가능)</div>
+                <div class="filter-container" id="filter-container"></div>
+            </div>
+            <div class="filter-block" style="border-top: 1px solid var(--border-light); padding-top: 12px;">
+                <div class="filter-title">👤 추천인 필터</div>
+                <div class="filter-container" id="user-filter-container"></div>
+            </div>
+        </div>
+
+        <div class="list-title">
+            <span>🗺️ 위시리스트 목록 (<span style="color: var(--primary);" id="count">0</span>)</span>
+            <select id="wishlist-sort" style="padding: 4px 26px 4px 10px; font-size: 12px; font-weight:700; border-radius: 8px; width: auto; margin:0;" onchange="changeSortCriteria()">
+                <option value="newest">🕒 최신 등록순</option>
+                <option value="upvotes">👍 개추 많은순</option>
+                <option value="downvotes">👎 비추 많은순</option>
+                <option value="comments">💬 댓글 많은순</option>
+            </select>
+        </div>
+        <ul id="places-list"></ul>
+    </div>
+
+    <div id="sched-section" style="display: none;">
+        <button id="print-btn" class="submit-btn" style="background-color: #0984e3; width: 100%; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 8px;" onclick="window.print()">
+            📄 전체 일정표 모아보기 및 PDF 저장
+        </button>
+
+        <div class="day-management-box">
+            <div style="font-weight: 700; font-size: 13px; color: var(--text-main);">🗓️ 총 여행 일수 관리 (<span id="total-days-display" style="color:var(--primary)">5</span>일차)</div>
+            <div class="day-manage-btn-group">
+                <button type="button" class="day-btn add" onclick="addTripDay()">+ 일차 추가</button>
+                <button type="button" class="day-btn del" onclick="deleteTripDay()">- 마지막일 삭제</button>
+            </div>
+        </div>
+
+        <form id="day-members-form" onsubmit="event.preventDefault(); saveDayMembers();" style="margin-bottom: 25px;">
+            <div style="font-weight: 700; font-size: 14px; margin-bottom: 5px; color: var(--primary);">👥 Day별 고정 멤버 설정</div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+                <div class="input-group" style="width: 90px;">
+                    <label>일차</label>
+                    <select id="setting-member-day" onchange="onSettingDayChange()" required></select>
+                </div>
+                <div class="input-group" style="flex: 1; min-width: 200px;">
+                    <label>고정 참여 멤버 선택</label>
+                    <div id="setting-members-checkboxes" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px;"></div>
+                </div>
+            </div>
+            <button type="submit" class="submit-btn" style="padding: 10px; font-size: 13px; margin-top: 5px;">고정 멤버 저장</button>
+        </form>
+
+        <form id="custom-sched-form">
+            <div style="font-weight: 700; font-size: 14px; margin-bottom: 5px; color: var(--primary);">➕ 빈 일정 직접 꽂아넣기</div>
+            <div style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
+                <div class="input-group" style="flex: 1; min-width: 80px;">
+                    <label>몇 일차?</label>
+                    <select id="custom-sched-day" onchange="onCustomSchedDayChange()" required></select>
+                </div>
+                <div class="input-group" style="flex: 1.5; min-width: 150px;">
+                    <label>시간 선택</label>
+                    <div class="time-select-container">
+                        <select id="custom-sched-hour"></select><span>시</span>
+                        <select id="custom-sched-min"></select><span>분</span>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>일정 제목</label>
+                <input type="text" id="custom-sched-title" placeholder="예: 나리타 공항 도착, 숙소 체크인" required>
+            </div>
+            <div class="input-group">
+                <label>일정 메모 (선택)</label>
+                <input type="text" id="custom-sched-memo" placeholder="예: 패스권 수령하기">
+            </div>
+            <div class="input-group">
+                <label>참여 멤버 (고정 멤버 기준 가감 가능)</label>
+                <div id="custom-sched-members-checkboxes" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px;"></div>
+            </div>
+            <button type="submit" class="submit-btn" style="padding: 12px; font-size: 13px;">등록하기</button>
+        </form>
+
+        <div id="timeline-container"></div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="sched-modal">
+    <div class="modal-content">
+        <div class="modal-title">🗓️ 언제 갈까요?</div>
+        <div class="input-group" style="margin-bottom: 12px;">
+            <label>며칠 차에 가나요?</label>
+            <select id="modal-day" onchange="onModalDayChange()"></select>
+        </div>
+        <div class="input-group" style="margin-bottom: 12px;">
+            <label>예상 시간 선택</label>
+            <div class="time-select-container">
+                <select id="modal-hour"></select><span>시</span>
+                <select id="modal-min"></select><span>분</span>
+            </div>
+        </div>
+        <div class="input-group" style="margin-bottom: 12px;">
+            <label>참여 멤버 (고정 멤버 기준 가감 가능)</label>
+            <div id="modal-members-checkboxes" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px;"></div>
+        </div>
+        <div class="modal-btn-group">
+            <button class="btn-cancel" onclick="closeModal()">취소</button>
+            <button class="btn-confirm" onclick="confirmAddToSched()">일정에 쏙 넣기</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // --- 파이어베이스 연동 ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyAMGc4Czztbu-GQlIyq8EfYPaiXzpjikxQ",
+        authDomain: "dimibasementtrip-283d1.firebaseapp.com",
+        projectId: "dimibasementtrip-283d1",
+        storageBucket: "dimibasementtrip-283d1.firebasestorage.app",
+        messagingSenderId: "230763075110",
+        appId: "1:230763075110:web:80fd0238afa82b0e1f78e7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const members = ["김지오", "오건우", "유연호", "이지호", "이지훈", "한희진", "한상우"];
+
+    // --- 상태 데이터 관리 ---
+    let places = [];
+    let availableTags = ['장소', '위치', '밥', '액티비티'];
+    let selectedTagsForNewPlace = [];
+    let editingPlaceTags = [];
+    let activeFilters = [];
+    let activeUserFilter = "";
+    let editingPlaceId = null;
+    let currentSortCriteria = "newest";
+
+    let schedules = [];
+    let pendingSchedPlace = null;
+    let editingSchedId = null;
+    let dayMembers = {};
+    let tripDays = [1, 2, 3, 4, 5];
+
+    // --- 다크 모드 ---
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+        themeToggleBtn.textContent = '☀️ 라이트 모드';
+    }
+    themeToggleBtn.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        let theme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+        themeToggleBtn.textContent = theme === 'dark' ? '☀️ 라이트 모드' : '🌙 다크 모드';
+        localStorage.setItem('theme', theme);
+        renderPlaces();
+        renderTimeline();
+    });
+
+    // --- 시간 옵션 생성 ---
+    function initTimeSelectorOptions(hourSelectId, minSelectId, defaultHour = "12", defaultMin = "00") {
+        const hourSel = document.getElementById(hourSelectId);
+        const minSel = document.getElementById(minSelectId);
+        if(!hourSel || !minSel) return;
+
+        let hourHtml = "";
+        for(let i=0; i<24; i++) {
+            let hStr = i < 10 ? "0" + i : "" + i;
+            hourHtml += `<option value="${hStr}" ${hStr === defaultHour ? 'selected' : ''}>${hStr}</option>`;
+        }
+        hourSel.innerHTML = hourHtml;
+
+        let minHtml = "";
+        for(let i=0; i<60; i+=10) {
+            let mStr = i < 10 ? "0" + i : "" + i;
+            minHtml += `<option value="${mStr}" ${mStr === defaultMin ? 'selected' : ''}>${mStr}</option>`;
+        }
+        minSel.innerHTML = minHtml;
+    }
+
+    initTimeSelectorOptions("custom-sched-hour", "custom-sched-min", "12", "00");
+    initTimeSelectorOptions("modal-hour", "modal-min", "12", "00");
+
+    function syncDaySelectDropdowns() {
+        const selects = ["setting-member-day", "custom-sched-day", "modal-day"];
+        selects.forEach(id => {
+            const el = document.getElementById(id);
+            if(!el) return;
+            const currentVal = el.value;
+            let html = tripDays.map(d => `<option value="${d}">Day ${d}</option>`).join('');
+            el.innerHTML = html;
+            if(tripDays.includes(parseInt(currentVal))) el.value = currentVal;
+        });
+        document.getElementById('total-days-display').textContent = tripDays.length;
+    }
+
+    window.switchTab = function(tabName) {
+        document.getElementById('tab-wish').classList.remove('active');
+        document.getElementById('tab-sched').classList.remove('active');
+        document.getElementById(`tab-${tabName}`).classList.add('active');
+
+        if(tabName === 'wish') {
+            document.getElementById('wish-section').style.display = 'block';
+            document.getElementById('sched-section').style.display = 'none';
+        } else {
+            document.getElementById('wish-section').style.display = 'none';
+            document.getElementById('sched-section').style.display = 'block';
+            renderDayMembersSetting();
+            updateCustomFormMembersCheckbox();
+            renderTimeline();
+        }
+    };
+
+    // 1️⃣ 위시리스트 DB 리스너
+    onSnapshot(collection(db, "japan_trip_db"), (snapshot) => {
+        places = [];
+        snapshot.forEach((doc) => {
+            places.push({ id: doc.id, ...doc.data() });
+        });
+        renderPlaces();
+    });
+
+    // 2️⃣ 일정표 DB 리스너
+    onSnapshot(collection(db, "japan_schedules"), (snapshot) => {
+        schedules = [];
+        snapshot.forEach((doc) => {
+            schedules.push({ id: doc.id, ...doc.data() });
+        });
+        renderTimeline();
+    });
+
+    // 태그 관리
+    function renderTagPool() {
+        const pool = document.getElementById('tag-pool');
+        if(!pool) return;
+        pool.innerHTML = availableTags.map(tag => {
+            const isSelected = selectedTagsForNewPlace.includes(tag);
+            return `<span class="selectable-tag ${isSelected ? 'active' : ''}" style="${isSelected ? 'background:var(--primary); color:white;' : ''}" onclick="toggleTagSelection('${tag}')">
+                ${tag}
+                <span class="tag-del-x" onclick="event.stopPropagation(); deleteTagFromPool('${tag}')">✕</span>
+            </span>`;
+        }).join('');
+    }
+
+    function addNewTag() {
+        const input = document.getElementById('new-tag-input');
+        const val = input.value.trim();
+        if(val && !availableTags.includes(val)) {
+            availableTags.push(val);
+            input.value = '';
+            renderTagPool();
+            renderFilterButtons();
+        }
+    }
+
+    function deleteTagFromPool(tag) {
+        availableTags = availableTags.filter(t => t !== tag);
+        selectedTagsForNewPlace = selectedTagsForNewPlace.filter(t => t !== tag);
+        renderTagPool();
+        renderFilterButtons();
+    }
+
+    window.toggleTagSelection = function(tag) {
+        if(selectedTagsForNewPlace.includes(tag)) {
+            selectedTagsForNewPlace = selectedTagsForNewPlace.filter(t => t !== tag);
+        } else {
+            selectedTagsForNewPlace.push(tag);
+        }
+        renderTagPool();
+    };
+
+    // 필터 관리
+    function renderFilterButtons() {
+        const filterContainer = document.getElementById('filter-container');
+        const userFilterContainer = document.getElementById('user-filter-container');
+
+        if(filterContainer) {
+            filterContainer.innerHTML = availableTags.map(tag => {
+                const active = activeFilters.includes(tag) ? 'active' : '';
+                return `<button class="filter-btn ${active}" onclick="toggleFilter('${tag}')">${tag}</button>`;
+            }).join('');
+        }
+
+        if(userFilterContainer) {
+            userFilterContainer.innerHTML = members.map(m => {
+                const active = activeUserFilter === m ? 'active' : '';
+                return `<button class="filter-btn ${active}" onclick="toggleUserFilter('${m}')">${m}</button>`;
+            }).join('');
+        }
+    }
+
+    function toggleFilter(tag) {
+        if(activeFilters.includes(tag)) {
+            activeFilters = activeFilters.filter(t => t !== tag);
+        } else {
+            activeFilters.push(tag);
+        }
+        renderFilterButtons();
+        renderPlaces();
+    }
+
+    function toggleUserFilter(user) {
+        activeUserFilter = activeUserFilter === user ? "" : user;
+        renderFilterButtons();
+        renderPlaces();
+    }
+
+    function changeSortCriteria() {
+        currentSortCriteria = document.getElementById('wishlist-sort').value;
+        renderPlaces();
+    }
+
+    // 위시리스트 추가
+    document.getElementById('travel-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const uploader = document.getElementById('uploader').value;
+        const title = document.getElementById('title').value.trim();
+        let url = document.getElementById('url').value.trim();
+        const memo = document.getElementById('memo').value.trim();
+
+        if(!uploader) {
+            alert('추천인을 선택해 주세요!');
+            return;
+        }
+        if(!url.startsWith('http://') && !url.startsWith('https://')) {
+            url = 'https://' + url;
+        }
+
+        await addDoc(collection(db, "japan_trip_db"), {
+            uploader,
+            title,
+            url,
+            tags: [...selectedTagsForNewPlace],
+            memo,
+            upvotes: [],
+            downvotes: [],
+            comments: [],
+            createdAt: Date.now()
+        });
+
+        document.getElementById('title').value = '';
+        document.getElementById('url').value = '';
+        document.getElementById('memo').value = '';
+        selectedTagsForNewPlace = [];
+        renderTagPool();
+    });
+
+    // 위시리스트 렌더링
+    function renderPlaces() {
+        let filtered = places.filter(p => {
+            if(activeFilters.length > 0) {
+                const hasAllTags = activeFilters.every(ft => (p.tags || []).includes(ft));
+                if(!hasAllTags) return false;
+            }
+            if(activeUserFilter && p.uploader !== activeUserFilter) return false;
+            return true;
+        });
+
+        filtered.sort((a, b) => {
+            if(currentSortCriteria === 'upvotes') return (b.upvotes?.length || 0) - (a.upvotes?.length || 0);
+            if(currentSortCriteria === 'downvotes') return (b.downvotes?.length || 0) - (a.downvotes?.length || 0);
+            if(currentSortCriteria === 'comments') return (b.comments?.length || 0) - (a.comments?.length || 0);
+            return (b.createdAt || 0) - (a.createdAt || 0);
+        });
+
+        document.getElementById('count').textContent = filtered.length;
+        const listEl = document.getElementById('places-list');
+
+        if(filtered.length === 0) {
+            listEl.innerHTML = `<div class="empty-msg">등록된 장소가 없습니다. 첫 번째 장소를 추천해 보세요!</div>`;
+            return;
+        }
+
+        listEl.innerHTML = filtered.map(place => {
+            const isEditing = editingPlaceId === place.id;
+            if(isEditing) {
+                return `<li id="place-${place.id}">
+                    <div class="edit-mode-box">
+                        <input type="text" id="edit-title-${place.id}" value="${place.title}">
+                        <input type="text" id="edit-url-${place.id}" value="${place.url}">
+                        <textarea id="edit-memo-${place.id}" rows="2">${place.memo || ''}</textarea>
+                        <div>
+                            <label style="font-size:12px; font-weight:700;">태그 선택:</label>
+                            <div style="display:flex; gap:4px; flex-wrap:wrap; margin-top:4px;">
+                                ${availableTags.map(t => {
+                                    const sel = editingPlaceTags.includes(t);
+                                    return `<span class="selectable-tag ${sel ? 'active' : ''}" style="${sel ? 'background:var(--primary); color:white;' : ''}" onclick="toggleEditTagSel('${place.id}', '${t}')">${t}</span>`;
+                                }).join('')}
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:6px; margin-top:6px;">
+                            <button class="save-btn" onclick="saveEditResult('${place.id}')">💾 저장</button>
+                            <button class="edit-btn" onclick="cancelEditMode()">취소</button>
+                        </div>
+                    </div>
+                </li>`;
+            }
+
+            const upCount = place.upvotes?.length || 0;
+            const downCount = place.downvotes?.length || 0;
+
+            return `<li>
+                <div class="card-top">
+                    <div class="link-info">
+                        <span class="uploader-tag">👤 ${place.uploader} 추천</span>
+                        <a href="${place.url}" target="_blank" class="link-anchor">🔗 ${place.title}</a>
+                        ${place.memo ? `<div class="link-memo">${place.memo}</div>` : ''}
+                        <div style="display:flex; gap:4px; flex-wrap:wrap; margin-top:4px;">
+                            ${(place.tags || []).map(t => `<span style="font-size:11px; background:var(--tag-unselected-bg); padding:2px 8px; border-radius:12px; color:var(--text-muted);">#${t}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="vote-btn upvote" onclick="toggleVote('${place.id}', 'up')">👍 개추 ${upCount}</button>
+                        <button class="vote-btn downvote" onclick="toggleVote('${place.id}', 'down')">👎 비추 ${downCount}</button>
+                        <button class="add-sched-btn" onclick="openModal('${place.id}')">🗓️ 일정 추가</button>
+                        <button class="edit-btn" onclick="turnOnEditMode('${place.id}')">✏️ 수정</button>
+                        <button class="delete-btn" onclick="deletePlace('${place.id}')">🗑️ 삭제</button>
+                    </div>
+                </div>
+                <div class="comment-zone">
+                    ${(place.comments || []).map(c => `<div class="comment-item"><span class="comment-user">${c.user}:</span>${c.text}</div>`).join('')}
+                    <div class="comment-form">
+                        <select id="comment-user-${place.id}">
+                            <option value="">작성자</option>
+                            ${members.map(m => `<option value="${m}">${m}</option>`).join('')}
+                        </select>
+                        <input type="text" id="comment-text-${place.id}" placeholder="댓글 작성..." onkeypress="if(event.key==='Enter') addComment('${place.id}')">
+                        <button onclick="addComment('${place.id}')">등록</button>
+                    </div>
+                </div>
+            </li>`;
+        }).join('');
+    }
+
+    // 투표 기능
+    function toggleVote(id, type) {
+        const place = places.find(p => p.id === id);
+        if(!place) return;
+        const currentUser = prompt("투표자의 이름을 입력해 주세요 (" + members.join(', ') + ")");
+        if(!currentUser || !members.includes(currentUser)) {
+            if(currentUser) alert("올바른 멤버 이름을 입력해주세요.");
+            return;
+        }
+
+        let upvotes = place.upvotes || [];
+        let downvotes = place.downvotes || [];
+
+        if(type === 'up') {
+            if(upvotes.includes(currentUser)) {
+                upvotes = upvotes.filter(u => u !== currentUser);
+            } else {
+                upvotes.push(currentUser);
+                downvotes = downvotes.filter(u => u !== currentUser);
+            }
+        } else {
+            if(downvotes.includes(currentUser)) {
+                downvotes = downvotes.filter(u => u !== currentUser);
+            } else {
+                downvotes.push(currentUser);
+                upvotes = upvotes.filter(u => u !== currentUser);
+            }
+        }
+
+        updateDoc(doc(db, "japan_trip_db", id), { upvotes, downvotes });
+    }
+
+    // 댓글 등록
+    function addComment(id) {
+        const user = document.getElementById(`comment-user-${id}`).value;
+        const text = document.getElementById(`comment-text-${id}`).value.trim();
+
+        if(!user) { alert("댓글 작성자를 선택해 주세요."); return; }
+        if(!text) { alert("댓글 내용을 입력해 주세요."); return; }
+
+        const place = places.find(p => p.id === id);
+        const comments = place.comments || [];
+        comments.push({ user, text, createdAt: Date.now() });
+
+        updateDoc(doc(db, "japan_trip_db", id), { comments });
+    }
+
+    // 장소 삭제
+    function deletePlace(id) {
+        if(confirm("정말 이 추천 장소를 삭제하시겠습니까?")) {
+            deleteDoc(doc(db, "japan_trip_db", id));
+        }
+    }
+
+    // 장소 수정
+    function turnOnEditMode(id) {
+        editingPlaceId = id;
+        const place = places.find(p => p.id === id);
+        editingPlaceTags = place ? [...(place.tags || [])] : [];
+        renderPlaces();
+    }
+
+    function cancelEditMode() {
+        editingPlaceId = null;
+        editingPlaceTags = [];
+        renderPlaces();
+    }
+
+    function toggleEditTagSel(id, tag) {
+        if(editingPlaceTags.includes(tag)) {
+            editingPlaceTags = editingPlaceTags.filter(t => t !== tag);
+        } else {
+            editingPlaceTags.push(tag);
+        }
+        renderPlaces();
+    }
+
+    function saveEditResult(id) {
+        const title = document.getElementById(`edit-title-${id}`).value.trim();
+        const url = document.getElementById(`edit-url-${id}`).value.trim();
+        const memo = document.getElementById(`edit-memo-${id}`).value.trim();
+
+        if(!title || !url) { alert("제목과 URL을 입력해 주세요."); return; }
+
+        updateDoc(doc(db, "japan_trip_db", id), {
+            title, url, memo, tags: editingPlaceTags
+        });
+        editingPlaceId = null;
+        editingPlaceTags = [];
+    }
+
+    // 일정 추가 모달
+    function openModal(placeId) {
+        pendingSchedPlace = places.find(p => p.id === placeId);
+        if(!pendingSchedPlace) return;
+        document.getElementById('sched-modal').style.display = 'flex';
+        syncDaySelectDropdowns();
+        onModalDayChange();
+    }
+
+    function closeModal() {
+        document.getElementById('sched-modal').style.display = 'none';
+        pendingSchedPlace = null;
+    }
+
+    function onModalDayChange() {
+        const day = document.getElementById('modal-day').value || 1;
+        const container = document.getElementById('modal-members-checkboxes');
+        const dayFixMembers = dayMembers[day] || members;
+
+        container.innerHTML = members.map(m => {
+            const checked = dayFixMembers.includes(m) ? 'checked' : '';
+            return `<label style="font-size:12px;"><input type="checkbox" value="${m}" ${checked} class="modal-member-cb"> ${m}</label>`;
+        }).join('');
+    }
+
+    async function confirmAddToSched() {
+        if(!pendingSchedPlace) return;
+        const day = parseInt(document.getElementById('modal-day').value);
+        const hour = document.getElementById('modal-hour').value;
+        const min = document.getElementById('modal-min').value;
+
+        const selectedMembers = Array.from(document.querySelectorAll('.modal-member-cb:checked')).map(cb => cb.value);
+
+        await addDoc(collection(db, "japan_schedules"), {
+            day,
+            time: `${hour}:${min}`,
+            title: pendingSchedPlace.title,
+            url: pendingSchedPlace.url,
+            memo: pendingSchedPlace.memo || '',
+            members: selectedMembers,
+            createdAt: Date.now()
+        });
+
+        closeModal();
+        alert("일정에 추가되었습니다!");
+    }
+
+    // 여행 일수 조절
+    function addTripDay() {
+        const nextDay = tripDays.length + 1;
+        tripDays.push(nextDay);
+        syncDaySelectDropdowns();
+        renderTimeline();
+    }
+
+    function deleteTripDay() {
+        if(tripDays.length <= 1) {
+            alert("최소 1일차는 존재해야 합니다.");
+            return;
+        }
+        tripDays.pop();
+        syncDaySelectDropdowns();
+        renderTimeline();
+    }
+
+    function onSettingDayChange() {
+        renderDayMembersSetting();
+    }
+
+    function renderDayMembersSetting() {
+        const day = document.getElementById('setting-member-day').value || 1;
+        const container = document.getElementById('setting-members-checkboxes');
+        const currentFix = dayMembers[day] || members;
+
+        container.innerHTML = members.map(m => {
+            const checked = currentFix.includes(m) ? 'checked' : '';
+            return `<label style="font-size:12px;"><input type="checkbox" value="${m}" ${checked} class="setting-member-cb"> ${m}</label>`;
+        }).join('');
+    }
+
+    function saveDayMembers() {
+        const day = document.getElementById('setting-member-day').value;
+        const selected = Array.from(document.querySelectorAll('.setting-member-cb:checked')).map(cb => cb.value);
+        dayMembers[day] = selected;
+        alert(`Day ${day}의 고정 멤버가 저장되었습니다.`);
+        onCustomSchedDayChange();
+    }
+
+    function onCustomSchedDayChange() {
+        updateCustomFormMembersCheckbox();
+    }
+
+    function updateCustomFormMembersCheckbox() {
+        const day = document.getElementById('custom-sched-day').value || 1;
+        const container = document.getElementById('custom-sched-members-checkboxes');
+        const fixMembers = dayMembers[day] || members;
+
+        container.innerHTML = members.map(m => {
+            const checked = fixMembers.includes(m) ? 'checked' : '';
+            return `<label style="font-size:12px;"><input type="checkbox" value="${m}" ${checked} class="custom-member-cb"> ${m}</label>`;
+        }).join('');
+    }
+
+    // 커스텀 일정 폼 제출
+    document.getElementById('custom-sched-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const day = parseInt(document.getElementById('custom-sched-day').value);
+        const hour = document.getElementById('custom-sched-hour').value;
+        const min = document.getElementById('custom-sched-min').value;
+        const title = document.getElementById('custom-sched-title').value.trim();
+        const memo = document.getElementById('custom-sched-memo').value.trim();
+        const selectedMembers = Array.from(document.querySelectorAll('.custom-member-cb:checked')).map(cb => cb.value);
+
+        await addDoc(collection(db, "japan_schedules"), {
+            day,
+            time: `${hour}:${min}`,
+            title,
+            url: '',
+            memo,
+            members: selectedMembers,
+            createdAt: Date.now()
+        });
+
+        document.getElementById('custom-sched-title').value = '';
+        document.getElementById('custom-sched-memo').value = '';
+    });
+
+    // 타임라인 렌더링
+    function renderTimeline() {
+        const container = document.getElementById('timeline-container');
+        if(!container) return;
+
+        let html = "";
+        tripDays.forEach(day => {
+            const dayScheds = schedules.filter(s => s.day === day);
+            dayScheds.sort((a, b) => a.time.localeCompare(b.time));
+
+            html += `<div class="timeline-day-header">📅 Day ${day}</div>`;
+
+            if(dayScheds.length === 0) {
+                html += `<div class="empty-msg" style="padding: 15px 0;">등록된 일정이 없습니다.</div>`;
+            } else {
+                dayScheds.forEach(s => {
+                    const isEditing = editingSchedId === s.id;
+                    if(isEditing) {
+                        html += `<div class="timeline-item">
+                            <div class="timeline-card" style="width:100%;">
+                                <div class="edit-mode-box">
+                                    <input type="text" id="edit-sched-title-${s.id}" value="${s.title}">
+                                    <input type="text" id="edit-sched-memo-${s.id}" value="${s.memo || ''}">
+                                    <div style="display:flex; gap:6px;">
+                                        <button class="save-btn" onclick="saveSchedEdit('${s.id}')">💾 저장</button>
+                                        <button class="edit-btn" onclick="cancelSchedEdit()">취소</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                    } else {
+                        html += `<div class="timeline-item">
+                            <div class="timeline-time">${s.time}</div>
+                            <div class="timeline-card">
+                                <div class="sched-title">${s.url ? `<a href="${s.url}" target="_blank">🔗 ${s.title}</a>` : s.title}</div>
+                                ${s.memo ? `<div class="sched-memo">${s.memo}</div>` : ''}
+                                ${s.members && s.members.length > 0 ? `<div style="font-size:11px; color:var(--text-muted); margin-top:6px;">👥 참여: ${s.members.join(', ')}</div>` : ''}
+                                <div class="sched-actions">
+                                    <button class="edit-btn" onclick="turnOnSchedEditMode('${s.id}')">✏️</button>
+                                    <button class="delete-btn" onclick="deleteSched('${s.id}')">🗑️</button>
+                                </div>
+                            </div>
+                        </div>`;
+                    }
+                });
+            }
+        });
+
+        container.innerHTML = html;
+    }
+
+    function deleteSched(id) {
+        if(confirm("이 일정을 삭제하시겠습니까?")) {
+            deleteDoc(doc(db, "japan_schedules", id));
+        }
+    }
+
+    function turnOnSchedEditMode(id) {
+        editingSchedId = id;
+        renderTimeline();
+    }
+
+    function cancelSchedEdit() {
+        editingSchedId = null;
+        renderTimeline();
+    }
+
+    function saveSchedEdit(id) {
+        const title = document.getElementById(`edit-sched-title-${id}`).value.trim();
+        const memo = document.getElementById(`edit-sched-memo-${id}`).value.trim();
+
+        if(!title) { alert("일정 제목을 입력해 주세요."); return; }
+
+        updateDoc(doc(db, "japan_schedules", id), { title, memo });
+        editingSchedId = null;
+    }
+
+    // 전역 함수 연동
+    window.addNewTag = addNewTag; window.deleteTagFromPool = deleteTagFromPool;
+    window.toggleFilter = toggleFilter; window.toggleUserFilter = toggleUserFilter;
+    window.toggleVote = toggleVote; window.addComment = addComment;
+    window.deletePlace = deletePlace; window.turnOnEditMode = turnOnEditMode;
+    window.saveEditResult = saveEditResult; window.cancelEditMode = cancelEditMode;
+    window.toggleEditTagSel = toggleEditTagSel;
+    window.openModal = openModal; window.closeModal = closeModal;
+    window.confirmAddToSched = confirmAddToSched;
+    window.deleteSched = deleteSched; window.turnOnSchedEditMode = turnOnSchedEditMode;
+    window.saveSchedEdit = saveSchedEdit; window.cancelSchedEdit = cancelSchedEdit;
+    window.saveDayMembers = saveDayMembers; window.onSettingDayChange = onSettingDayChange;
+    window.onModalDayChange = onModalDayChange; window.onCustomSchedDayChange = onCustomSchedDayChange;
+    window.changeSortCriteria = changeSortCriteria;
+    window.addTripDay = addTripDay; window.deleteTripDay = deleteTripDay;
+
+    // 초기화
+    syncDaySelectDropdowns();
+    renderTagPool();
+    renderFilterButtons();
+</script>
+</body>
+</html>
